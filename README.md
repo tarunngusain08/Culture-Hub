@@ -173,3 +173,6 @@ CREATE TABLE Idea (
     vote_count INT DEFAULT 0
 );
 ```
+
+## Flow Diagram
+![CultureHub](https://github.com/user-attachments/assets/1310ac04-2d47-4d01-8d6c-083959582d79)
