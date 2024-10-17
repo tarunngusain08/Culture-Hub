@@ -106,7 +106,7 @@ Below are the primary endpoints available in the CultureHub platform:
    DB_USER=culturehub
    DB_PASSWORD=culturehub
    DB_NAME=culturehub
-   JWT_SECRET=your_jwt_secret
+   JWT_SECRET=jwt_secret
    ```
 
 4. **Run the Application:**
