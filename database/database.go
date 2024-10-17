@@ -14,5 +14,5 @@ func Connect() {
 		panic("failed to connect to database")
 	}
 
-	DB.AutoMigrate(&models.User{}, &models.Activity{})
+	DB.AutoMigrate(&models.User{}, &models.Activity{}, &models.Idea{})
 }
