@@ -177,3 +177,16 @@ CREATE TABLE Idea (
 ## Flow Diagram
 ![CultureHub](https://github.com/user-attachments/assets/482de8d9-1577-4d65-ad3b-492f781d14d2)
 
+
+
+```
+psql() {
+	docker run -d \
+	--name postgres \
+	-e POSTGRES_PASSWORD=password \
+	-e POSTGRES_USER=admin \
+	-e PGDATA=/var/lib/postgres/data/pgdata \
+	-p 5432:5432 \
+	postgres:alpine
+}
+```
