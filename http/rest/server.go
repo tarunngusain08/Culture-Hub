@@ -2,7 +2,6 @@ package rest
 
 import (
 	"context"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 
@@ -12,16 +11,6 @@ import (
 	"github.com/tarunngusain08/culturehub/http/rest/session"
 	"github.com/tarunngusain08/culturehub/pkg/models"
 )
-
-func main() {
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
-	r.Run()
-}
 
 type Server struct {
 	server *gin.Engine
