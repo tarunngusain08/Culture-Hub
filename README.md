@@ -175,4 +175,5 @@ CREATE TABLE Idea (
 ```
 
 ## Flow Diagram
-![CultureHub](https://github.com/user-attachments/assets/1310ac04-2d47-4d01-8d6c-083959582d79)
+![CultureHub](https://github.com/user-attachments/assets/482de8d9-1577-4d65-ad3b-492f781d14d2)
+
