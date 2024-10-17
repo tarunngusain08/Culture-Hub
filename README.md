@@ -144,34 +144,47 @@ Below are the primary endpoints available in the CultureHub platform:
 
 ## Database Models
 
-### User Table
 ```sql
-CREATE TABLE User (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    role ENUM('TeamMember', 'HR', 'Admin') DEFAULT 'TeamMember',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    last_login TIMESTAMP
-);
-```
+CREATE TYPE user_role AS ENUM ('TeamMember', 'HR', 'Admin');
+CREATE TYPE idea_status AS ENUM ('Submitted', 'Approved', 'InProgress', 'Completed');
 
-### Idea Table
-```sql
-CREATE TABLE Idea (
-    id SERIAL PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    description TEXT NOT NULL,
-    tags VARCHAR(255),
-    timeline DATE,
-    impact_estimation TEXT,
-    user_id INT REFERENCES User(id) ON DELETE CASCADE,
-    status ENUM('Submitted', 'Approved', 'InProgress', 'Completed') DEFAULT 'Submitted',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    vote_count INT DEFAULT 0
+CREATE TABLE "User" (
+                        id SERIAL PRIMARY KEY,
+                        username VARCHAR(50) UNIQUE NOT NULL,
+                        email VARCHAR(100) UNIQUE NOT NULL,
+                        password_hash VARCHAR(255) NOT NULL,
+                        role user_role DEFAULT 'TeamMember',
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        last_login TIMESTAMP
 );
+
+CREATE TABLE "Idea" (
+                        id SERIAL PRIMARY KEY,
+                        title VARCHAR(255) NOT NULL,
+                        description TEXT NOT NULL,
+                        tags VARCHAR(255),
+                        timeline DATE,
+                        impact_estimation TEXT,
+                        user_id INT REFERENCES "User"(id) ON DELETE CASCADE,
+                        status idea_status DEFAULT 'Submitted',
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        vote_count INT DEFAULT 0
+);
+
+CREATE OR REPLACE FUNCTION update_timestamp()
+    RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER set_timestamp
+    BEFORE UPDATE ON "Idea"
+    FOR EACH ROW
+EXECUTE FUNCTION update_timestamp();
+
 ```
 
 ## Flow Diagram
