@@ -134,8 +134,9 @@ Below are the primary endpoints available in the CultureHub platform:
 
 2. **Post a New Idea:**
    ```bash
-	curl -X POST http://your-api-url/ideas \
-	-H "Content-Type: application/json" \
+	curl -X POST http://localhost:8080/api/v1/ideas \
+	-H "Authorization: Bearer YOUR_TOKEN" \
+ 	-H "Content-Type: application/json" \
 	-d '{
 	    "title": "Promote Work-Life Balance Initiatives",
 	    "description": "Introduce flexible working hours, mental health days, and clear boundaries between work and personal life to help employees achieve a better work-life balance.",
@@ -145,7 +146,16 @@ Below are the primary endpoints available in the CultureHub platform:
 	    "user_id": 1
 	}'
    ```
-
+   3. **Fetch all Ideas:**
+   ```bash
+	curl -X GET "http://localhost:8080/ideas?page=1&limit=10" \
+	-H "Authorization: Bearer YOUR_TOKEN"
+   ```
+   4. **Fetch specific Idea:**
+   ```bash
+	curl -X GET "http://localhost:8080/ideas/:id" \
+	-H "Authorization: Bearer YOUR_TOKEN"
+   ```	   
 
 ---
 
