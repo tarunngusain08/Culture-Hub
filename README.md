@@ -1,4 +1,4 @@
-# Culture-Hub
+c# Culture-Hub
 
 A collaborative platform where team members can submit ideas to enhance team culture and engagement. CultureHub allows users to propose, upvote, downvote, and track upcoming/ongoing activities, while HR/Admin members can manage approvals and track progress.
 
@@ -134,11 +134,18 @@ Below are the primary endpoints available in the CultureHub platform:
 
 2. **Post a New Idea:**
    ```bash
-   curl -X POST http://localhost:8080/api/v1/ideas \
-   -H "Authorization: Bearer JWT_TOKEN" \
-   -H "Content-Type: application/json" \
-   -d '{"title": "New Team Building Activity", "description": "Fun activity", "tags": ["team-building"]}'
+	curl -X POST http://your-api-url/ideas \
+	-H "Content-Type: application/json" \
+	-d '{
+	    "title": "Promote Work-Life Balance Initiatives",
+	    "description": "Introduce flexible working hours, mental health days, and clear boundaries between work and personal life to help employees achieve a better work-life balance.",
+	    "tags": "[\"employee wellness\", \"work-life balance\", \"mental health\"]",
+	    "timeline": "2024-12-01",
+	    "impact_estimation": "Improved employee satisfaction and productivity, with a potential reduction in burnout by 20%.",
+	    "user_id": 1
+	}'
    ```
+
 
 ---
 
