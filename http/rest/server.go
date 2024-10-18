@@ -47,9 +47,9 @@ func (s *Server) routing(r *handlers.Router) {
 
 	s.server.POST(handlers.LoginPath)
 	s.server.POST("/api/v1/register")
-	s.server.POST("/api/v1/ideas")
-	s.server.GET("/api/v1/ideas")
-	s.server.GET("/api/v1/ideas/{id}")
+	s.server.POST("/api/v1/ideas", r.CreateIdea)
+	s.server.GET("/api/v1/ideas", r.GetIdeas)
+	s.server.GET("/api/v1/ideas/:id", r.GetIdea)
 
 	s.server.POST("/api/v1/ideas/:id/vote", r.VoteCountHandler)
 

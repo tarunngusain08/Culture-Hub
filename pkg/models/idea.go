@@ -43,3 +43,18 @@ func (i IdeaDao) VoteUpdate(id string, vote int) error {
 	}
 	return err
 }
+
+func (i IdeaDao) Create(idea *Idea) error {
+	return i.baseDAO.db.Create(idea).Error
+}
+
+func (i IdeaDao) GetCount() (count int64, err error) {
+	err = i.baseDAO.db.Model(&Idea{}).Count(&count).Error
+	return
+}
+
+func (i IdeaDao) GetPaginated(offset, limit int) ([]Idea, error) {
+	var ideas []Idea
+	err := i.db.Offset(offset).Limit(limit).Find(&ideas).Error
+	return ideas, err
+}
