@@ -20,3 +20,11 @@ type Activity struct {
 	Votes       int
 	CreatedBy   uint
 }
+
+func (a ActivityDao) GetActivities() ([]Activity, error) {
+	var activities []Activity
+	if err := a.db.Find(&activities).Error; err != nil {
+		return nil, err
+	}
+	return activities, nil
+}

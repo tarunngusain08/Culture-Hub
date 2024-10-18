@@ -45,13 +45,18 @@ func (s *Server) routing(r *handlers.Router) {
 
 	s.server.GET("/hello/world", r.HelloWorldHandler)
 
-	s.server.POST(handlers.LoginPath)
-	s.server.POST("/api/v1/register")
-	s.server.POST("/api/v1/ideas", r.CreateIdea)
-	s.server.GET("/api/v1/ideas", r.GetIdeas)
-	s.server.GET("/api/v1/ideas/:id", r.GetIdea)
+	s.server.POST("/api/v1/register", r.Register)
+	s.server.POST(handlers.LoginPath, r.Login)
 
-	s.server.POST("/api/v1/ideas/:id/vote", r.VoteCountHandler)
+	protected := s.server.Group("/api/v1")
+	protected.Use(middleware.AuthMiddleware())
+
+	protected.POST("/ideas", r.CreateIdea)
+	protected.GET("/ideas", r.GetIdeas)
+	protected.GET("/ideas/:id", r.GetIdea)
+
+	protected.POST("/ideas/:id/vote", r.VoteCountHandler)
+	protected.GET("/activities", r.GetActivities)
 
 	s.server.NoRoute()
 }
