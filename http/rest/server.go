@@ -43,7 +43,7 @@ func (s *Server) middlewares(dao models.DaoService) {
 func (s *Server) routing(r *handlers.Router) {
 	s.server.Static("/assets", config.GetAppPath()+"http/assets/")
 
-	s.server.GET("/hello/world", handlers.HelloWorld)
+	s.server.GET("/hello/world", r.HelloWorldHandler)
 
 	s.server.POST(handlers.LoginPath)
 	s.server.POST("/api/v1/register")
@@ -51,7 +51,7 @@ func (s *Server) routing(r *handlers.Router) {
 	s.server.GET("/api/v1/ideas")
 	s.server.GET("/api/v1/ideas/{id}")
 
-	s.server.POST("/api/v1/ideas/{id}/vote?action={upvote|downvote}")
+	s.server.POST("/api/v1/ideas/:id/vote", r.VoteCountHandler)
 
 	s.server.NoRoute()
 }

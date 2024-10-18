@@ -23,3 +23,23 @@ type Idea struct {
 	UpdatedAt        time.Time `gorm:"autoUpdateTime" json:"updated_at"`
 	VoteCount        int       `gorm:"default:0" json:"vote_count"` // Default vote count
 }
+
+func (IdeaDao) TableName() string {
+	return "ideas"
+}
+
+func (i IdeaDao) ByID(id string) (*Idea, error) {
+	var idea Idea
+	err := i.db.Where("id =?", id).First(&idea).Error
+	return &idea, err
+}
+
+func (i IdeaDao) VoteUpdate(id string, vote int) error {
+	var err error
+	if vote > 0 {
+		err = i.db.Model(&Idea{}).Where("id = ?", id).Update("vote_count", gorm.Expr("vote_count - ?", 1)).Error
+	} else {
+		err = i.db.Model(&Idea{}).Where("id = ?", id).Update("vote_count", gorm.Expr("vote_count - ?", 1)).Error
+	}
+	return err
+}
