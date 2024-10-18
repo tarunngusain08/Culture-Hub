@@ -2,7 +2,9 @@ package models
 
 import (
 	"time"
-
+	"fmt"
+	"encoding/json"
+	"database/sql/driver"
 	"gorm.io/gorm"
 )
 
@@ -12,16 +14,63 @@ type IdeaDao struct {
 
 type Idea struct {
 	gorm.Model
-	Title            string    `gorm:"type:varchar(255);not null" json:"title"`
-	Description      string    `gorm:"type:text;not null" json:"description"`
-	Tags             string    `gorm:"type:text" json:"tags"` // Array of strings
-	Timeline         time.Time `json:"timeline"`
-	ImpactEstimation string    `json:"impact_estimation"`
-	UserID           uint      `json:"user_id"`                                            // Foreign key to User table
-	Status           string    `gorm:"type:idea_status;default:'Submitted'" json:"status"` // Default to 'Submitted'
-	CreatedAt        time.Time `gorm:"autoCreateTime" json:"created_at"`
-	UpdatedAt        time.Time `gorm:"autoUpdateTime" json:"updated_at"`
-	VoteCount        int       `gorm:"default:0" json:"vote_count"` // Default vote count
+	Title            string    `gorm:"type:varchar(255);not null" json:"title" binding:"required"`                // Title is required
+	Description      string    `gorm:"type:text;not null" json:"description" binding:"required"`                   // Description is required
+	Tags             string    `gorm:"type:text" json:"tags" binding:"required"`                                   // Tags are required (stringified JSON array)
+	Timeline         CustomDate `json:"timeline" binding:"required"`                                                 // Timeline is required
+	ImpactEstimation string    `json:"impact_estimation" binding:"required"`                                        // Impact estimation is required
+	UserID           uint      `json:"user_id" binding:"required"`                                                  // User ID is required
+	Status           string    `gorm:"type:idea_status;default:'Submitted'" json:"status"`                         // Default to 'Submitted'
+	CreatedAt        time.Time `gorm:"autoCreateTime" json:"created_at"`                                           // Created at timestamp
+	UpdatedAt        time.Time `gorm:"autoUpdateTime" json:"updated_at"`                                           // Updated at timestamp
+	VoteCount        int       `gorm:"default:0" json:"vote_count"`                                                 // Default vote count
+}
+
+type CustomDate time.Time
+
+// UnmarshalJSON handles the custom parsing for the date format
+func (cd *CustomDate) UnmarshalJSON(b []byte) error {
+	str := string(b[1 : len(b)-1]) // Strip the quotes
+	t, err := time.Parse("2006-01-02", str) // Ensure format is correct
+	if err != nil {
+		return fmt.Errorf("error parsing date: %v", err)
+	}
+	*cd = CustomDate(t) // Assign the parsed date
+	return nil
+}
+
+// MarshalJSON handles the custom formatting when serializing
+func (cd CustomDate) MarshalJSON() ([]byte, error) {
+	t := time.Time(cd) // Convert CustomDate back to time.Time
+	return json.Marshal(t.Format("2006-01-02")) // Format and marshal to JSON
+}
+
+// Scan implements the sql.Scanner interface for database scanning
+func (cd *CustomDate) Scan(value interface{}) error {
+	if value == nil {
+		*cd = CustomDate(time.Time{}) // Assign zero time if value is nil
+		return nil
+	}
+
+	t, ok := value.(time.Time)
+	if !ok {
+		return fmt.Errorf("cannot scan type %T into CustomDate", value)
+	}
+	*cd = CustomDate(t) // Assign the scanned time
+	return nil
+}
+
+// Value implements the driver.Valuer interface for database storage
+func (cd CustomDate) Value() (driver.Value, error) {
+	if cd.IsZero() {
+		return nil, nil // Return nil if the time is zero
+	}
+	return time.Time(cd), nil // Convert CustomDate back to time.Time
+}
+
+// IsZero checks if the CustomDate is zero
+func (cd CustomDate) IsZero() bool {
+	return time.Time(cd).IsZero()
 }
 
 func (IdeaDao) TableName() string {
