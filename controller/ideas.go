@@ -10,6 +10,41 @@ import (
 )
 
 // CreateIdea handles POST /ideas to create a new idea
+type IdeaSubmission struct {
+	Input models.Idea
+	C     *gin.Context
+}
+
+// Create a channel for the queue
+var ideaQueue = make(chan IdeaSubmission, 100) // Adjust the buffer size as needed, Process 100 message to queue simultaneously
+
+// Worker function to process idea submissions
+func ideaWorker() {
+	for submission := range ideaQueue {
+		var input = submission.Input
+		var c = submission.C
+
+		// Create new Idea
+		idea := models.Idea{
+			Title:            input.Title,
+			Description:      input.Description,
+			Tags:             input.Tags,
+			Timeline:         input.Timeline,
+			ImpactEstimation: input.ImpactEstimation,
+			UserID:           input.UserID,
+		}
+
+		// Save the idea to the database
+		if err := database.DB.Create(&idea).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			continue // Skip to the next submission on error
+		}
+
+		c.JSON(http.StatusOK, gin.H{"data": idea})
+	}
+}
+
+// CreateIdea handles the idea submission
 func CreateIdea(c *gin.Context) {
 	var input models.Idea
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -17,23 +52,13 @@ func CreateIdea(c *gin.Context) {
 		return
 	}
 
-	// Create new Idea
-	idea := models.Idea{
-		Title:            input.Title,
-		Description:      input.Description,
-		Tags:             input.Tags,
-		Timeline:         input.Timeline,
-		ImpactEstimation: input.ImpactEstimation,
-		UserID:           input.UserID,
-	}
+	// Send the idea submission to the queue
+	ideaQueue <- IdeaSubmission{Input: input, C: c}
+}
 
-	// Save the idea to the database
-	if err := database.DB.Create(&idea).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"data": idea})
+// Initialize function to start the worker
+func Init() {
+	go ideaWorker() // Start the worker in a goroutine
 }
 
 // GetIdeas handles GET /ideas to fetch all ideas with pagination
