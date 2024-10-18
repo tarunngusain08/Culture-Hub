@@ -54,7 +54,7 @@ func (r *Router) isValidUser(userDetails *models.User) error {
 			return err
 		}
 	} else {
-		user, err = r.dao.User().GetByUsername(user.Username)
+		user, err = r.dao.User().GetByUsername(userDetails.Username)
 	}
 
 	// Compare hashed password
