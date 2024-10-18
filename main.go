@@ -21,6 +21,11 @@ func main() {
 	protected := r.Group("/api/v1")
 	protected.Use(middleware.AuthMiddleware())
 	protected.GET("/activities", controller.GetActivities)
+	// Idea Routes (Add these lines for the Idea model)
+	controller.Init()
+	protected.POST("/ideas", controller.CreateIdea) // Create a new idea
+	protected.GET("/ideas", controller.GetIdeas)    // Get all ideas
+	protected.GET("/ideas/:id", controller.GetIdea) // Get a specific idea by ID
 
 	r.Run(":8080")
 }
