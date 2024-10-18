@@ -13,17 +13,17 @@ type IdeaDao struct {
 }
 
 type Idea struct {
-	gorm.Model
-	Title            string    `gorm:"type:varchar(255);not null" json:"title" binding:"required"`                // Title is required
-	Description      string    `gorm:"type:text;not null" json:"description" binding:"required"`                   // Description is required
-	Tags             string    `gorm:"type:text" json:"tags" binding:"required"`                                   // Tags are required (stringified JSON array)
-	Timeline         CustomDate `json:"timeline" binding:"required"`                                                 // Timeline is required
-	ImpactEstimation string    `json:"impact_estimation" binding:"required"`                                        // Impact estimation is required
-	UserID           uint      `json:"user_id" binding:"required"`                                                  // User ID is required
-	Status           string    `gorm:"type:idea_status;default:'Submitted'" json:"status"`                         // Default to 'Submitted'
-	CreatedAt        time.Time `gorm:"autoCreateTime" json:"created_at"`                                           // Created at timestamp
-	UpdatedAt        time.Time `gorm:"autoUpdateTime" json:"updated_at"`                                           // Updated at timestamp
-	VoteCount        int       `gorm:"default:0" json:"vote_count"`                                                 // Default vote count
+    ID               uint      `gorm:"primaryKey" json:"id"`
+    Title            string    `gorm:"type:varchar(255);not null" json:"title" binding:"required"`
+    Description      string    `gorm:"type:text;not null" json:"description" binding:"required"`
+    Tags             string    `gorm:"type:text" json:"tags" binding:"required"`
+    Timeline         CustomDate `json:"timeline" binding:"required"`
+    ImpactEstimation string    `json:"impact_estimation" binding:"required"`
+    UserID           uint      `json:"user_id" binding:"required"`
+    Status           string    `gorm:"type:idea_status;default:'Submitted'" json:"status"`
+    CreatedAt        time.Time `gorm:"autoCreateTime" json:"created_at,omitempty"`
+    UpdatedAt        time.Time `gorm:"autoUpdateTime" json:"updated_at,omitempty"`
+    VoteCount        int       `gorm:"default:0" json:"vote_count"`
 }
 
 type CustomDate time.Time
