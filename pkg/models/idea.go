@@ -86,7 +86,7 @@ func (i IdeaDao) ByID(id string) (*Idea, error) {
 func (i IdeaDao) VoteUpdate(id string, vote int) error {
 	var err error
 	if vote > 0 {
-		err = i.db.Model(&Idea{}).Where("id = ?", id).Update("vote_count", gorm.Expr("vote_count - ?", 1)).Error
+		err = i.db.Model(&Idea{}).Where("id = ?", id).Update("vote_count", gorm.Expr("vote_count + ?", 1)).Error
 	} else {
 		err = i.db.Model(&Idea{}).Where("id = ?", id).Update("vote_count", gorm.Expr("vote_count - ?", 1)).Error
 	}
