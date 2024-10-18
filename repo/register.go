@@ -13,7 +13,7 @@ func NewRegisterRepo(db *gorm.DB) *RegisterRepo {
 	return &RegisterRepo{db: db}
 }
 
-func (r *RegisterRepo) Register(user *models.User, hashedPassword string) error {
+func (r *RegisterRepo) Register(user *models.User, hashedPassword []byte) error {
 	user.Password = string(hashedPassword)
 	if err := r.db.Create(&user).Error; err != nil {
 		return err

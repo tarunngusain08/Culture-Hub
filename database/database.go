@@ -6,13 +6,14 @@ import (
 	"github.com/tarunngusain08/Culture-Hub/models"
 )
 
-func Connect() {
+func Connect() *gorm.DB {
 	// Update with your PostgreSQL credentials
 	dsn := "host=localhost dbname=postgres port=5432 sslmode=disable"
-	DB, err := gorm.Open("postgres", dsn)
+	db, err := gorm.Open("postgres", dsn)
 	if err != nil {
 		panic("failed to connect to database")
 	}
 
-	DB.AutoMigrate(&models.User{}, &models.Activity{})
+	db.AutoMigrate(&models.User{}, &models.Activity{})
+	return db
 }
