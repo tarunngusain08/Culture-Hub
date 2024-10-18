@@ -29,8 +29,8 @@ func NewDB(dns string, opts ...Option) (*gorm.DB, error) {
 
 func ResetDB() error {
 	statements := []string{
-		// "Create Type round_type AS ENUM ()",
-		// "Create Type action AS ENUM ()",
+		"CREATE TYPE user_role AS ENUM ('TeamMember', 'HR', 'Admin')",
+		"CREATE TYPE idea_status AS ENUM ('Submitted', 'Approved', 'InProgress', 'Completed')",
 	}
 	err := postgres.ResetDB(statements)
 	if err != nil {
