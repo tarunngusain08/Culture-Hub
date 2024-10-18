@@ -14,7 +14,7 @@ type Idea struct {
 	gorm.Model
 	Title            string    `gorm:"type:varchar(255);not null" json:"title"`
 	Description      string    `gorm:"type:text;not null" json:"description"`
-	Tags             []string  `gorm:"type:text[]" json:"tags"` // Array of strings
+	Tags             string    `gorm:"type:text" json:"tags"` // Array of strings
 	Timeline         time.Time `json:"timeline"`
 	ImpactEstimation string    `json:"impact_estimation"`
 	UserID           uint      `json:"user_id"`                                            // Foreign key to User table

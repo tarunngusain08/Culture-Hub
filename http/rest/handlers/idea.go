@@ -15,50 +15,29 @@ type IdeaSubmission struct {
 	C     *gin.Context
 }
 
-// Create a channel for the queue
-var ideaQueue = make(chan IdeaSubmission, 100) // Adjust the buffer size as needed, Process 100 message to queue simultaneously
-
-// Worker function to process idea submissions
-func ideaWorker(dao models.DaoService) {
-	for submission := range ideaQueue {
-		input := submission.Input
-		c := submission.C
-
-		// Create new Idea
-		idea := models.Idea{
-			Title:            input.Title,
-			Description:      input.Description,
-			Tags:             input.Tags,
-			Timeline:         input.Timeline,
-			ImpactEstimation: input.ImpactEstimation,
-			UserID:           input.UserID,
-		}
-
-		// Save the idea to the database
-		if err := dao.Idea().Create(&idea); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			continue // Skip to the next submission on error
-		}
-
-		c.JSON(http.StatusOK, gin.H{"data": idea})
-	}
-}
-
 // CreateIdea handles the idea submission
 func (r Router) CreateIdea(c *gin.Context) {
 	var input models.Idea
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
 	}
 
-	// Send the idea submission to the queue
-	ideaQueue <- IdeaSubmission{Input: input, C: c}
-}
+	// Create new Idea
+	idea := models.Idea{
+		Title:            input.Title,
+		Description:      input.Description,
+		Tags:             input.Tags,
+		Timeline:         input.Timeline,
+		ImpactEstimation: input.ImpactEstimation,
+		UserID:           input.UserID,
+	}
 
-// Initialize function to start the worker
-func Init(dao models.DaoService) {
-	go ideaWorker(dao) // Start the worker in a goroutine
+	// Save the idea to the database
+	if err := r.dao.Idea().Create(&idea); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": idea})
 }
 
 // GetIdeas handles GET /ideas to fetch all ideas with pagination

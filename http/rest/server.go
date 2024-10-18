@@ -28,7 +28,7 @@ func Serve(dao models.DaoService) error {
 	s.middlewares(dao)
 	s.routing(router)
 
-	return s.server.Run(":8080") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	return s.server.Run(":8081") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
 
 func (s *Server) middlewares(dao models.DaoService) {
