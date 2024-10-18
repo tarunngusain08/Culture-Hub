@@ -24,6 +24,6 @@ func (u UserDao) GetByUsername(username string) (*User, error) {
 	return &user, err
 }
 
-func (u UserDao) Create(user User) error {
+func (u UserDao) Create(user *User) error {
 	return u.db.Create(user).Error
 }

@@ -46,7 +46,7 @@ func (s *Server) routing(r *handlers.Router) {
 	s.server.GET("/hello/world", r.HelloWorldHandler)
 
 	s.server.POST("/api/v1/register", r.Register)
-	s.server.POST(handlers.LoginPath, r.Login)
+	s.server.POST("/api/v1/login", r.Login)
 
 	protected := s.server.Group("/api/v1")
 	protected.Use(middleware.AuthMiddleware())

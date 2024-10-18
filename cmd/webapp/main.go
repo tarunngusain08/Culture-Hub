@@ -28,20 +28,20 @@ func main() {
 	if *resetDB {
 		e := db.ResetDB()
 		if e != nil {
-			logger.Fatal("db reset error", zap.Error(e))
+			logger.Fatal("dB reset error", zap.Error(e))
 		}
 	}
 
-	db, err := db.NewDB(postgres.ConnectionStrWithDB())
+	dB, err := db.NewDB(postgres.ConnectionStrWithDB())
 	if err != nil {
-		logger.Fatal("db connection error", zap.Error(err))
+		logger.Fatal("dB connection error", zap.Error(err))
 	}
 
-	dao := models.DAO(db)
+	dao := models.DAO(dB)
 	if *resetDB {
 		e := dao.Migrate()
 		if e != nil {
-			logger.Fatal("db migration error", zap.Error(e))
+			logger.Fatal("dB migration error", zap.Error(e))
 		}
 		os.Exit(0)
 	}

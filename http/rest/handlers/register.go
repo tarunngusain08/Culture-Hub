@@ -9,7 +9,7 @@ import (
 	"github.com/tarunngusain08/culturehub/pkg/models"
 )
 
-func (r *Router) Register(c *gin.Context) {
+func (r Router) Register(c *gin.Context) {
 	var user models.User
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -21,14 +21,10 @@ func (r *Router) Register(c *gin.Context) {
 		return
 	}
 	user.Password = string(hashedPassword)
-	if err := r.dao.User().Create(user); err != nil {
+	if err := r.dao.User().Create(&user); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	c.Writer.Write([]byte("hello world"))
+	c.JSON(http.StatusOK, gin.H{"data": "user created successfully"})
 }

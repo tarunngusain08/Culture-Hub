@@ -186,7 +186,7 @@ psql() {
 	-e POSTGRES_PASSWORD=password \
 	-e POSTGRES_USER=admin \
 	-e PGDATA=/var/lib/postgres/data/pgdata \
-	-p 5432:5432 \
+	-p 5433:5432 \
 	postgres:alpine
 }
 ```
