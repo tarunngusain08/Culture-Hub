@@ -146,12 +146,12 @@ Below are the primary endpoints available in the CultureHub platform:
 	    "user_id": 1
 	}'
    ```
-   3. **Fetch all Ideas:**
+3. **Fetch all Ideas:**
    ```bash
 	curl -X GET "http://localhost:8080/ideas?page=1&limit=10" \
 	-H "Authorization: Bearer YOUR_TOKEN"
    ```
-   4. **Fetch specific Idea:**
+4. **Fetch specific Idea:**
    ```bash
 	curl -X GET "http://localhost:8080/ideas/:id" \
 	-H "Authorization: Bearer YOUR_TOKEN"
