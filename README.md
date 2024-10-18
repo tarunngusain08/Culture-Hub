@@ -132,7 +132,7 @@ Below are the primary endpoints available in the CultureHub platform:
    -d '{"username": "john_doe", "email": "john.doe@example.com", "password": "password123"}'
    ```
 
-2. **Post a New Idea:**
+2. **Post a New Idea:** below some required fields
    ```bash
 	curl -X POST http://localhost:8080/api/v1/ideas \
 	-H "Authorization: Bearer YOUR_TOKEN" \
