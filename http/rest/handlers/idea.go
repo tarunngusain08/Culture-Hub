@@ -20,6 +20,7 @@ func (r Router) CreateIdea(c *gin.Context) {
 	var input models.Idea
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	// Create new Idea
@@ -35,6 +36,7 @@ func (r Router) CreateIdea(c *gin.Context) {
 	// Save the idea to the database
 	if err := r.dao.Idea().Create(&idea); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": idea})
