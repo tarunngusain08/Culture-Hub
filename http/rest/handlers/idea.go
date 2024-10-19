@@ -48,7 +48,7 @@ func (r Router) GetIdeas(c *gin.Context) {
 	// Get pagination parameters
 	page := c.Query("page")
 	limit := c.Query("limit")
-	UserID, _ := c.Get("username")
+	// UserID, _ := c.Get("username")
 	// if !ok {
 	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "username not found"})
 	// }
@@ -86,7 +86,7 @@ func (r Router) GetIdeas(c *gin.Context) {
 		v := components.Idea{}
 		v.Title = i.Title
 		v.Content = i.Description
-		v.User = UserID.(string)
+		// v.User = UserID.(string)
 		ideaComps = append(ideaComps, v)
 	}
 	fmt.Println("IDEAS!!", ideaComps)
