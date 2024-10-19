@@ -31,6 +31,7 @@ func (r Router) CreateIdea(c *gin.Context) {
 		Tags:             input.Tags,
 		Timeline:         input.Timeline,
 		ImpactEstimation: input.ImpactEstimation,
+		UserID:           input.UserID,
 	}
 
 	// Save the idea to the database
@@ -86,12 +87,12 @@ func (r Router) GetIdeas(c *gin.Context) {
 	// Fetch the user_name for each idea based on UserID
 	for _, idea := range ideas {
 		// Fetch user details associated with the idea
-		user, err := r.dao.User().ByID(idea.UserID)
-		if err != nil {
-			// If user is not found, handle error appropriately
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "User not found for idea"})
-			return
-		}
+		// user, err := r.dao.User().ByID(idea.UserID)
+		// if err != nil {
+		// 	// If user is not found, handle error appropriately
+		// 	c.JSON(http.StatusInternalServerError, gin.H{"error": "User not found for idea"})
+		// 	return
+		// }
 
 		// Append the idea and the user_name to the new list
 		ideasWithUserNames = append(ideasWithUserNames, gin.H{
@@ -102,11 +103,11 @@ func (r Router) GetIdeas(c *gin.Context) {
 			"timeline":          idea.Timeline, // Custom date format
 			"impact_estimation": idea.ImpactEstimation,
 			"user_id":           idea.UserID,
-			"user_name":         user.Username, // Add user_name to the response
-			"status":            idea.Status,
-			"created_at":        idea.CreatedAt,
-			"updated_at":        idea.UpdatedAt,
-			"vote_count":        idea.VoteCount, // Include vote count
+			// "user_name":         user.Username, // Add user_name to the response
+			"status":     idea.Status,
+			"created_at": idea.CreatedAt,
+			"updated_at": idea.UpdatedAt,
+			"vote_count": idea.VoteCount, // Include vote count
 		})
 	}
 

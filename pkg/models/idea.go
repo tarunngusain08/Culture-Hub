@@ -20,7 +20,7 @@ type Idea struct {
 	Tags             string     `gorm:"type:text" json:"tags" binding:"required"`
 	Timeline         CustomDate `json:"timeline" binding:"required"`
 	ImpactEstimation string     `json:"impact_estimation" binding:"required"`
-	UserID           uint       `json:"user_id" binding:"required"`
+	UserID           int        `json:"user_id" binding:"required"`
 	Status           string     `gorm:"type:idea_status;default:'Submitted'" json:"status"`
 	CreatedAt        time.Time  `gorm:"autoCreateTime" json:"created_at,omitempty"`
 	UpdatedAt        time.Time  `gorm:"autoUpdateTime" json:"updated_at,omitempty"`

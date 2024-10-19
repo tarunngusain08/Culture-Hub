@@ -24,7 +24,7 @@ func (u UserDao) GetByUsername(username string) (*User, error) {
 	return &user, err
 }
 
-func (u UserDao) ByID(id uint) (*User, error) {
+func (u UserDao) ByID(id int) (*User, error) {
 	var user User
 	err := u.db.Where("id = ?", id).First(&user).Error
 	return &user, err
