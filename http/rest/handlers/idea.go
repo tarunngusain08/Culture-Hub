@@ -82,14 +82,45 @@ func (r Router) GetIdeas(c *gin.Context) {
 		return
 	}
 
+	// Initialize a slice to hold ideas with user names
+	ideasWithUserNames := []gin.H{}
+
+	// Fetch the user_name for each idea based on UserID
+	for _, idea := range ideas {
+		// Fetch user details associated with the idea
+		user, err := r.dao.User().ByID(idea.UserID)
+		if err != nil {
+			// If user is not found, handle error appropriately
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "User not found for idea"})
+			return
+		}
+
+		// Append the idea and the user_name to the new list
+		ideasWithUserNames = append(ideasWithUserNames, gin.H{
+			"id":                 idea.ID,
+			"title":              idea.Title,
+			"description":        idea.Description,
+			"tags":               idea.Tags,
+			"timeline":           idea.Timeline,          // Custom date format
+			"impact_estimation":  idea.ImpactEstimation,
+			"user_id":            idea.UserID,
+			"user_name":          user.Username,  // Add user_name to the response
+			"status":             idea.Status,
+			"created_at":         idea.CreatedAt,
+			"updated_at":         idea.UpdatedAt,
+			"vote_count":         idea.VoteCount,  // Include vote count
+		})
+	}
+
 	// Create response structure with pagination info
 	response := gin.H{
 		"total": total,
 		"page":  pageNum,
 		"limit": limitNum,
-		"ideas": ideas,
+		"ideas": ideasWithUserNames,
 	}
 
+	// Return the JSON response
 	c.JSON(http.StatusOK, response)
 }
 

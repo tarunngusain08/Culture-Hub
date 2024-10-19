@@ -24,6 +24,12 @@ func (u UserDao) GetByUsername(username string) (*User, error) {
 	return &user, err
 }
 
+func (u UserDao) ByID(id uint) (*User, error) {
+	var user User
+	err := u.db.Where("id = ?", id).First(&user).Error
+	return &user, err
+}
+
 func (u UserDao) Create(user *User) error {
 	return u.db.Create(user).Error
 }
