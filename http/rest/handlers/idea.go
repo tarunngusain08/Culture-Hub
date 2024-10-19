@@ -1,11 +1,13 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 
+	"github.com/tarunngusain08/culturehub/http/components"
 	"github.com/tarunngusain08/culturehub/pkg/models"
 )
 
@@ -22,7 +24,6 @@ func (r Router) CreateIdea(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
 	// Create new Idea
 	idea := models.Idea{
 		Title:            input.Title,
@@ -30,7 +31,6 @@ func (r Router) CreateIdea(c *gin.Context) {
 		Tags:             input.Tags,
 		Timeline:         input.Timeline,
 		ImpactEstimation: input.ImpactEstimation,
-		UserID:           input.UserID,
 	}
 
 	// Save the idea to the database
@@ -44,9 +44,14 @@ func (r Router) CreateIdea(c *gin.Context) {
 
 // GetIdeas handles GET /ideas to fetch all ideas with pagination
 func (r Router) GetIdeas(c *gin.Context) {
+	fmt.Println("hello world!!!!!")
 	// Get pagination parameters
 	page := c.Query("page")
 	limit := c.Query("limit")
+	// UserID, _ := c.Get("username")
+	// if !ok {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "username not found"})
+	// }
 
 	// Set default values for pagination
 	const defaultLimit = 10
@@ -68,13 +73,6 @@ func (r Router) GetIdeas(c *gin.Context) {
 	// Calculate offset for pagination
 	offset := (pageNum - 1) * limitNum
 
-	// Fetch total count of ideas
-	total, err := r.dao.Idea().GetCount()
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
 	// Fetch paginated ideas
 	ideas, err := r.dao.Idea().GetPaginated(offset, limitNum)
 	if err != nil {
@@ -82,15 +80,18 @@ func (r Router) GetIdeas(c *gin.Context) {
 		return
 	}
 
-	// Create response structure with pagination info
-	response := gin.H{
-		"total": total,
-		"page":  pageNum,
-		"limit": limitNum,
-		"ideas": ideas,
+	fmt.Println("IDEAS!!", ideas)
+	var ideaComps []components.Idea
+	for _, i := range ideas {
+		v := components.Idea{}
+		v.Title = i.Title
+		v.Content = i.Description
+		// v.User = UserID.(string)
+		ideaComps = append(ideaComps, v)
 	}
+	fmt.Println("IDEAS!!", ideaComps)
 
-	c.JSON(http.StatusOK, response)
+	r.RenderHelloworld(c, http.StatusOK, components.FormPage, ideaComps)
 }
 
 // GetIdea handles GET /ideas/:id to fetch a specific idea by ID

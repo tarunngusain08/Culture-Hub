@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/tarunngusain08/culturehub/config"
+	"github.com/tarunngusain08/culturehub/http/rest/gintemplrenderer"
 	"github.com/tarunngusain08/culturehub/http/rest/handlers"
 	"github.com/tarunngusain08/culturehub/http/rest/middleware"
 	"github.com/tarunngusain08/culturehub/http/rest/session"
@@ -17,6 +18,12 @@ type Server struct {
 }
 
 func newServer() *Server {
+	engine := gin.Default()
+	ginHtmlRenderer := engine.HTMLRender
+	engine.HTMLRender = &gintemplrenderer.HTMLTemplRenderer{FallbackHtmlRenderer: ginHtmlRenderer}
+
+	// Disable trusted proxy warning.
+	engine.SetTrustedProxies(nil)
 	return &Server{server: gin.Default()}
 }
 
@@ -28,7 +35,7 @@ func Serve(dao models.DaoService) error {
 	s.middlewares(dao)
 	s.routing(router)
 
-	return s.server.Run(":8081") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	return s.server.Run(":8082") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
 
 func (s *Server) middlewares(dao models.DaoService) {
@@ -49,7 +56,7 @@ func (s *Server) routing(r *handlers.Router) {
 	s.server.POST("/api/v1/login", r.Login)
 
 	protected := s.server.Group("/api/v1")
-	protected.Use(middleware.AuthMiddleware())
+	// protected.Use(middleware.AuthMiddleware())
 
 	protected.POST("/ideas", r.CreateIdea)
 	protected.GET("/ideas", r.GetIdeas)

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="user_dash.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <!-- Video Background -->
+    <video id="background-video" autoplay loop muted>
+        <source src="images/back.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <header>
+        <h1>Welcome, <span id="user-name">[User's Name]</span>!</h1>
+        <nav>
+            <ul>
+                <li><a href="#" id="submit-idea-btn">Submit New Idea</a></li> <!-- Changed to use an ID -->
+                <li><a href="viewsubidea.html">View Submitted Ideas</a></li>
+            
+                <li><a href="logout.html">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="ideas-section">
+            <h2>Submitted Ideas</h2>
+            <div id="ideas-list">
+                <!-- Ideas will be dynamically loaded here -->
+                <div class="idea">
+                    <h3>Idea Title: Improving Team Collaboration</h3>
+                    <p>Submitted by: User123 on 2024-10-10</p>
+                    <button class="view-idea">View Idea</button>
+                    <button class="upvote">Upvote</button>
+                    <button class="downvote">Downvote</button>
+                </div>
+                <div class="idea">
+                    <h3>Idea Title: Flexible Working Hours</h3>
+                    <p>Submitted by: User456 on 2024-10-12</p>
+                    <button class="view-idea">View Idea</button>
+                    <button class="upvote">Upvote</button>
+                    <button class="downvote">Downvote</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="notifications">
+            <h2>Notifications</h2>
+            <ul id="notification-list">
+                <li>Loading notifications...</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 CultureHub. All rights reserved.</p>
+    </footer>
+
+    <!-- Modal for viewing ideas -->
+    <div id="idea-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn">&times;</button>
+            <h2 id="modal-idea-title">Idea Title</h2>
+            <p id="modal-idea-description">Idea description goes here...</p>
+        </div>
+    </div>
+
+    <!-- Modal for submitting new idea -->
+    <div id="submit-idea-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn">&times;</button>
+            <h2>Submit Your Idea</h2>
+            <input type="text" id="idea-title" placeholder="Idea Title">
+            <textarea id="idea-description" rows="4" placeholder="Describe your idea..."></textarea>
+            <button class="submit-idea">Submit Idea</button>
+        </div>
+    </div>
+
+    <script>
+        // Simulating dynamic user name
+        document.getElementById('user-name').innerText = "John Doe";
+
+        // Simulating dynamic ideas
+        const ideas = [
+            {
+                title: "Improving Team Collaboration",
+                description: "This idea suggests improving collaboration by using a team chat platform...",
+                user: "User123",
+                date: "2024-10-10"
+            },
+            {
+                title: "Flexible Working Hours",
+                description: "The proposal is to allow team members to work flexible hours to increase productivity...",
+                user: "User456",
+                date: "2024-10-12"
+            }
+        ];
+
+        // Populate ideas section
+        const ideasList = document.getElementById('ideas-list');
+        ideasList.innerHTML = ""; // Clear placeholder
+
+        ideas.forEach((idea, index) => {
+            const div = document.createElement('div');
+            div.classList.add('idea');
+            div.innerHTML = `
+                <h3>Idea Title: ${idea.title}</h3>
+                <p>Submitted by: ${idea.user} on ${idea.date}</p>
+                <button class="view-idea" data-index="${index}">View Idea</button>
+                <button class="upvote">Upvote</button>
+                <button class="downvote">Downvote</button>
+            `;
+            ideasList.appendChild(div);
+        });
+
+        // Modal functionality for viewing ideas
+        const modal = document.getElementById('idea-modal');
+        const modalTitle = document.getElementById('modal-idea-title');
+        const modalDescription = document.getElementById('modal-idea-description');
+        const closeModalBtn = modal.querySelector('.close-btn');
+
+        // Show modal when "View Idea" button is clicked
+        document.querySelectorAll('.view-idea').forEach(button => {
+            button.addEventListener('click', function () {
+                const ideaIndex = this.getAttribute('data-index');
+                const idea = ideas[ideaIndex];
+
+                modalTitle.textContent = idea.title;
+                modalDescription.textContent = idea.description;
+
+                modal.style.display = 'flex';
+            });
+        });
+
+        // Close modal when "x" button is clicked
+        closeModalBtn.addEventListener('click', function () {
+            modal.style.display = 'none';
+        });
+
+        // Modal functionality for submitting new ideas
+        const submitIdeaModal = document.getElementById('submit-idea-modal');
+        const submitIdeaBtn = document.getElementById('submit-idea-btn');
+        const closeSubmitModalBtn = submitIdeaModal.querySelector('.close-btn');
+
+        // Show modal for submitting ideas
+        submitIdeaBtn.addEventListener('click', function () {
+            submitIdeaModal.style.display = 'flex';
+        });
+
+        // Close modal for submitting ideas
+        closeSubmitModalBtn.addEventListener('click', function () {
+            submitIdeaModal.style.display = 'none';
+        });
+
+        // Handle idea submission
+        const submitIdeaButton = submitIdeaModal.querySelector('.submit-idea');
+        submitIdeaButton.addEventListener('click', function () {
+            const title = document.getElementById('idea-title').value;
+            const description = document.getElementById('idea-description').value;
+
+            if (title && description) {
+                // You would typically send this data to the server using an API call
+                alert('Idea submitted successfully!');
+                submitIdeaModal.style.display = 'none';
+
+                // Clear form fields after submission
+                document.getElementById('idea-title').value = '';
+                document.getElementById('idea-description').value = '';
+            } else {
+                alert('Please fill in both fields before submitting.');
+            }
+        });
+    </script>
+</body>
+</html>

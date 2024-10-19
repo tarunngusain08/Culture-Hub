@@ -3,6 +3,7 @@ module github.com/tarunngusain08/culturehub
 go 1.23.2
 
 require (
+	github.com/a-h/templ v0.2.778
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-contrib/cors v1.7.2
 	github.com/gin-contrib/sessions v1.0.1

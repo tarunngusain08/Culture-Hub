@@ -35,7 +35,7 @@ func (r Router) Login(c *gin.Context) {
 }
 
 func token(userDetails *models.User) (string, error) {
-	token, err := utils.GenerateToken(userDetails.ID)
+	token, err := utils.GenerateToken(userDetails.ID, userDetails.Username)
 	if err != nil {
 		return "", err
 	}

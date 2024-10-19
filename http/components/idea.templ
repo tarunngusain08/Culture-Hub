@@ -1,0 +1,21 @@
+package components
+
+type Idea struct {
+	Title string
+	Content string
+	Vote int
+	User string
+}
+
+templ IdeaList(list []Idea) {
+	for _, l := range list {
+		<div class="idea">
+			<h3>Idea Title: {l.Title}</h3>
+			<p>Submitted by: {l.User}</p>
+			<p>Description: {l.Content}</p>
+			<button class="view-idea">View Idea</button>␍
+			<button class="upvote">Upvote (<span class="upvote-count">0</span>)</button>␍
+			<button class="downvote">Downvote (<span class="downvote-count">0</span>)</button>␍
+    	</div>
+	}
+}
