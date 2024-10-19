@@ -1,10 +1,11 @@
 package models
 
 import (
-	"time"
-	"fmt"
-	"encoding/json"
 	"database/sql/driver"
+	"encoding/json"
+	"fmt"
+	"time"
+
 	"gorm.io/gorm"
 )
 
@@ -13,24 +14,24 @@ type IdeaDao struct {
 }
 
 type Idea struct {
-    ID               uint      `gorm:"primaryKey" json:"id"`
-    Title            string    `gorm:"type:varchar(255);not null" json:"title" binding:"required"`
-    Description      string    `gorm:"type:text;not null" json:"description" binding:"required"`
-    Tags             string    `gorm:"type:text" json:"tags" binding:"required"`
-    Timeline         CustomDate `json:"timeline" binding:"required"`
-    ImpactEstimation string    `json:"impact_estimation" binding:"required"`
-    UserID           uint      `json:"user_id" binding:"required"`
-    Status           string    `gorm:"type:idea_status;default:'Submitted'" json:"status"`
-    CreatedAt        time.Time `gorm:"autoCreateTime" json:"created_at,omitempty"`
-    UpdatedAt        time.Time `gorm:"autoUpdateTime" json:"updated_at,omitempty"`
-    VoteCount        int       `gorm:"default:0" json:"vote_count"`
+	ID               uint       `gorm:"primaryKey" json:"id"`
+	Title            string     `gorm:"type:varchar(255);not null" json:"title" binding:"required"`
+	Description      string     `gorm:"type:text;not null" json:"description" binding:"required"`
+	Tags             string     `gorm:"type:text" json:"tags" binding:"required"`
+	Timeline         CustomDate `json:"timeline" binding:"required"`
+	ImpactEstimation string     `json:"impact_estimation" binding:"required"`
+	UserID           uint       `json:"user_id" binding:"required"`
+	Status           string     `gorm:"type:idea_status;default:'Submitted'" json:"status"`
+	CreatedAt        time.Time  `gorm:"autoCreateTime" json:"created_at,omitempty"`
+	UpdatedAt        time.Time  `gorm:"autoUpdateTime" json:"updated_at,omitempty"`
+	VoteCount        int        `gorm:"default:0" json:"vote_count"`
 }
 
 type CustomDate time.Time
 
 // UnmarshalJSON handles the custom parsing for the date format
 func (cd *CustomDate) UnmarshalJSON(b []byte) error {
-	str := string(b[1 : len(b)-1]) // Strip the quotes
+	str := string(b[1 : len(b)-1])          // Strip the quotes
 	t, err := time.Parse("2006-01-02", str) // Ensure format is correct
 	if err != nil {
 		return fmt.Errorf("error parsing date: %v", err)
@@ -41,7 +42,7 @@ func (cd *CustomDate) UnmarshalJSON(b []byte) error {
 
 // MarshalJSON handles the custom formatting when serializing
 func (cd CustomDate) MarshalJSON() ([]byte, error) {
-	t := time.Time(cd) // Convert CustomDate back to time.Time
+	t := time.Time(cd)                          // Convert CustomDate back to time.Time
 	return json.Marshal(t.Format("2006-01-02")) // Format and marshal to JSON
 }
 
@@ -90,6 +91,12 @@ func (i IdeaDao) VoteUpdate(id string, vote int) error {
 	} else {
 		err = i.db.Model(&Idea{}).Where("id = ?", id).Update("vote_count", gorm.Expr("vote_count - ?", 1)).Error
 	}
+	return err
+}
+
+func (i IdeaDao) UpdateStatus(status string, id int) error {
+	var err error
+	err = i.db.Model(&Idea{}).Where("id = ?", id).Update("idea_status", status).Error
 	return err
 }
 
