@@ -1,0 +1,215 @@
+/* styles.css */
+
+/* Body and background settings */
+body {
+    background-color: #228b22; /* Replace with your desired background color */
+    font-family: Arial, sans-serif; /* Use the same font as admin_dashboard.html */
+    margin: 0;
+    padding: 0;
+}
+
+/* Header styles */
+header {
+    background-color: #228b22; /* Admin dashboard header color */
+    color:  #228b22;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Navigation menu styles */
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Main content styles */
+main {
+    padding: 20px;
+}
+
+/* Section styles */
+section {
+    margin-bottom: 20px;
+}
+
+/* Footer styles */
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #228b22; /* Match with header */
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+/* Modal styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Ensure modal stays in the foreground */
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 60%;
+    max-width: 800px;
+    position: relative;
+    z-index: 10000; /* Ensure content inside modal is on top */
+}
+body {
+	margin: 0;
+	padding: 0;
+	font-family: Arial, sans-serif;
+	overflow-x: hidden;
+}
+
+/* Fullscreen video background */
+#background-video {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	z-index: -1;
+}
+
+header, main, footer {
+	position: relative;
+	z-index: 1;
+	color: white;
+	padding: 20px;
+}
+
+nav ul {
+	list-style-type: none;
+	padding: 0;
+}
+
+nav li {
+	display: inline;
+	margin-right: 20px;
+}
+
+nav a {
+	color: white;
+	text-decoration: none;
+}
+
+section {
+	background: rgba(0, 0, 0, 0.5);
+	padding: 20px;
+	border-radius: 10px;
+	margin-bottom: 20px;
+}
+
+.idea {
+	margin-bottom: 20px;
+	padding: 10px;
+	background: rgba(255, 255, 255, 0.1);
+	border-radius: 8px;
+}
+
+.idea h3 {
+	margin-top: 0;
+}
+
+.idea button {
+	background-color: #4CAF50;
+	color: white;
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	margin-right: 10px;
+}
+
+.idea button.downvote {
+	background-color: #f44336;
+}
+
+/* Modal styles */
+.modal {
+	display: none; /* Hidden by default */
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.7);
+	justify-content: center;
+	align-items: center;
+}
+
+.modal-content {
+	background-color: white;
+	padding: 20px;
+	border-radius: 8px;
+	width: 60%;
+	max-width: 800px;
+	position: relative;
+}
+
+.modal-content h2 {
+	margin-top: 0;
+}
+
+.close-btn {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	font-size: 20px;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+}
+
+/* Form input styles in modal */
+.modal-content input, .modal-content textarea {
+	width: 100%;
+	padding: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	box-sizing: border-box;
+}
+
+.modal-content button.submit-idea {
+	background-color: #4CAF50;
+	color: white;
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+/* Ensures main content is scrollable */
+main {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding-bottom: 100px;
+}
+
+footer {
+	text-align: center;
+}

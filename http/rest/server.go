@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/tarunngusain08/culturehub/config"
+	"github.com/tarunngusain08/culturehub/http/rest/gintemplrenderer"
 	"github.com/tarunngusain08/culturehub/http/rest/handlers"
 	"github.com/tarunngusain08/culturehub/http/rest/middleware"
 	"github.com/tarunngusain08/culturehub/http/rest/session"
@@ -17,6 +18,12 @@ type Server struct {
 }
 
 func newServer() *Server {
+	engine := gin.Default()
+	ginHtmlRenderer := engine.HTMLRender
+	engine.HTMLRender = &gintemplrenderer.HTMLTemplRenderer{FallbackHtmlRenderer: ginHtmlRenderer}
+
+	// Disable trusted proxy warning.
+	engine.SetTrustedProxies(nil)
 	return &Server{server: gin.Default()}
 }
 
@@ -49,7 +56,7 @@ func (s *Server) routing(r *handlers.Router) {
 	s.server.POST("/api/v1/login", r.Login)
 
 	protected := s.server.Group("/api/v1")
-	protected.Use(middleware.AuthMiddleware())
+	// protected.Use(middleware.AuthMiddleware())
 
 	protected.POST("/ideas", r.CreateIdea)
 	protected.GET("/ideas", r.GetIdeas)
