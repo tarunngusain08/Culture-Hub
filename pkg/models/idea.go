@@ -94,7 +94,7 @@ func (i IdeaDao) VoteUpdate(id string, vote int) error {
 	return err
 }
 
-func (i IdeaDao) UpdateStatus(status string, id int) error {
+func (i IdeaDao) UpdateStatus(status string, id string) error {
 	var err error
 	err = i.db.Model(&Idea{}).Where("id = ?", id).Update("idea_status", status).Error
 	return err

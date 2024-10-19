@@ -12,7 +12,7 @@ func (r *Router) UpdateStatus(c *gin.Context) {
 
 	switch action {
 	case "submitted", "ongoing", "approved", "completed":
-		r.dao.Idea().UpdateStatus(action, id)
+		r.dao.Idea().UpdateStatus(action, ideaID)
 	default:
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid action"})
 		return

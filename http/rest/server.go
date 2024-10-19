@@ -65,7 +65,7 @@ func (s *Server) routing(r *handlers.Router) {
 	protected.POST("/ideas/:id/vote", r.VoteCountHandler)
 	protected.GET("/activities", r.GetActivities)
 
-	protected.PATCH("/ideas/:id/status", r.VoteCountHandler)
+	protected.POST("/ideas/:id/status", r.UpdateStatus)
 
 	s.server.NoRoute()
 }
