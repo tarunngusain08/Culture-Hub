@@ -190,3 +190,8 @@ EXECUTE FUNCTION update_timestamp();
 ## Flow Diagram
 ![CultureHub](https://github.com/user-attachments/assets/482de8d9-1577-4d65-ad3b-492f781d14d2)
 
+
+## Future Enhancements
+
+[CultureHub.md](https://github.com/user-attachments/files/17455456/CultureHub.md)<img width="1085" alt="Screenshot 2024-10-20 at 6 09 42 PM" src="https://github.com/user-attachments/assets/2f3e1c19-64db-4890-8155-e4b7a2f3bd59">
+
